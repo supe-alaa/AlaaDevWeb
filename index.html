@@ -1,30 +1,553 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Alaa's Web</title>
-    <link rel="icon" href="C:\Users\Alaa\Pictures\me(Trans).png"/>
+    <title>علاء | مطور ألعاب</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='My Simple test Page.css'>
-    <script src='main.js'></script>
+
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark-blue: #0d1b2a;
+            --bg-mid-blue: #1b263b;
+            --bg-light-blue: #415a77;
+            --text-light: #e0e1dd;
+            --accent-orange: #ff6700;
+            --accent-brown: #7D4F50; 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark-blue);
+            background-image: radial-gradient(circle at top left, rgba(27, 38, 59, 0.4), transparent 40%);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark-blue);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.75s ease, visibility 0.75s ease;
+        }
+        #preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid var(--bg-light-blue);
+            border-top-color: var(--accent-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        header {
+            width: 100%;
+            padding: 0 5%;
+            height: 80px;
+            background-color: rgba(13, 27, 42, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-orange);
+            transition: transform 0.4s ease;
+        }
+        .logo-container:hover .logo-img {
+            transform: rotate(360deg);
+        }
+
+        nav .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+        
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            color: white;
+        }
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        .burger { display: none; }
+
+        section {
+            padding: 120px 10%;
+            min-height: 100vh;
+            border-bottom: 1px solid var(--bg-mid-blue);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent-orange);
+            border-radius: 2px;
+        }
+        .button {
+            padding: 12px 35px;
+            background: var(--accent-orange);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 103, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 103, 0, 0.5);
+        }
+
+        #home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-orange);
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(255, 103, 0, 0.4);
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .hero-content h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .hero-content h1 span {
+            color: var(--accent-orange);
+            text-shadow: 0 0 15px rgba(255, 103, 0, 0.5);
+        }
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #about {
+            background-color: var(--bg-mid-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        .about-image img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--bg-light-blue);
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        }
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+        }
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            background: var(--bg-mid-blue);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+        .project-image img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+        .project-info { padding: 25px; }
+        .project-info h3 { font-size: 1.5rem; margin-bottom: 10px; }
+
+        /* Services Section */
+        #services {
+            background: var(--bg-mid-blue);
+        }
+        .services-container {
+            display: grid;
+        }
+        .service-card {
+            background: var(--bg-dark-blue);
+            padding: 40px 25px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            background: var(--bg-light-blue);
+        }
+        .service-card .icon {
+            font-size: 3.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+        }
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .service-card .button {
+            margin-top: 20px;
+        }
+        .khamsat-profile-link {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #contact {
+            background: var(--bg-dark-blue);
+            text-align: center;
+            border-bottom: none;
+            min-height: auto;
+            padding: 80px 10%;
+        }
+        .social-links { margin-top: 30px; }
+        .social-links a {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--accent-orange);
+            transform: translateY(-5px);
+        }
+        .copyright {
+            margin-top: 30px;
+            color: var(--bg-light-blue);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .burger {
+                display: block;
+                cursor: pointer;
+            }
+            .burger div { width: 25px; height: 3px; background-color: white; margin: 5px; transition: all 0.3s ease; }
+            .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+            .toggle .line2 { opacity: 0; }
+            .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+            nav .nav-links {
+                position: fixed;
+                right: 0;
+                top: 80px;
+                background: var(--bg-mid-blue);
+                height: calc(100vh - 80px);
+                width: 60%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                transform: translateX(100%);
+                transition: transform 0.5s ease-in;
+            }
+            .nav-links.nav-active { transform: translateX(0%); }
+            
+            section { padding: 80px 5%; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-content p { font-size: 1.2rem; }
+            #about { text-align: center; }
+        }
+    </style>
 </head>
 <body>
-    
-    <header>
-        <div><img src="C:\Users\Alaa\Pictures\me(Trans).png" alt="Logo"></div>
 
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <header id="header">
+        <a href="#home" class="logo-container">
+            <span>AlaaDev</span>
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">الرئيسية</a></li>
+                <li><a href="#about">عني</a></li>
+                <li><a href="#work">أعمالي</a></li>
+                <li><a href="#services">خدماتي</a></li>
+                <li><a href="#contact">تواصل معي</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
     </header>
 
-    <h1>Welcome to Alaa's Web</h1>
-    <h2>I'm Alaa</h2>
-    <h3>Game Devolper</h3>
-    <h4>And I like Games</h4>
-    <h6>This is a simple Web to know me My Sites:</h6>
-    <p>
-        <a href="https://alaa-dev.itch.io/" class="button">My Games</a>
-        <a href="https://discord.gg/QY4KJbVk" class="button">My discord</a>
-    </p>
+    <section id="home">
+        <div class="hero-content">
+            <img src="logo.png" alt="شعار علاء" class="hero-logo">
+            <h1>أهلاً بك في عالمي الإبداعي</h1>
+            <p>أنا علاء، مطور ألعاب متخصص في تحويل الأفكار إلى <span>تجارب ممتعة</span> وواقعية.</p>
+            <a href="#about" class="button">اعرف المزيد عني</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="about-image">
+            <img src="logo.png" alt="صورة علاء الشخصية">
+        </div>
+        <div class="about-text">
+            <h2 class="section-title" style="text-align: right; margin-bottom: 20px;"><span>عني</span></h2>
+            <h3>مطور ألعاب شغوف ومصمم مبدع</h3>
+            <p>منذ صغري وأنا مفتون بعالم الألعاب، وهذا الشغف قادني إلى تعلم البرمجة والتصميم لأصنع عوالمي الخاصة. أمتلك خبرة في استخدام محركات الألعاب مثل Unity و Unreal Engine، وأسعى دائماً لتقديم ألعاب ذات جودة عالية وقصص مؤثرة. يمكنك متابعة خدماتي على منصة خمسات.</p>
+        </div>
+    </section>
+
+    <section id="work">
+        <div class="section-title">
+            <h2>أعمالي</h2>
+        </div>
+        <div class="projects-container">
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://placehold.co/600x400/ff6700/white?text=Game+1" alt="صورة لعبة">
+                </div>
+                <div class="project-info">
+                    <h3>مشروع الفضاء المجهول</h3>
+                    <p>لعبة مغامرات واستكشاف في الفضاء الشاسع.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://placehold.co/600x400/1b263b/white?text=Game+2" alt="صورة لعبة">
+                </div>
+                <div class="project-info">
+                    <h3>مملكة الألغاز</h3>
+                    <p>لعبة ألغاز تتحدى العقل في عالم خيالي.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://placehold.co/600x400/415a77/white?text=Game+3" alt="صورة لعبة">
+                </div>
+                <div class="project-info">
+                    <h3>سباق الأبطال</h3>
+                    <p>لعبة سباق سيارات سريعة ومثيرة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     
+    <section id="services">
+        <div class="section-title">
+            <h2>خدمتي الأساسية على خمسات</h2>
+        </div>
+        <div class="services-container">
+            <div class="service-card" style="grid-column: 1 / -1; max-width: 700px; margin: 0 auto; text-align: center;">
+                <div>
+                    <div class="icon"><i class="fas fa-gamepad"></i></div>
+                    <h3>تطوير لعبة كاملة من الصفر للنشر</h3>
+                    <p>أقدم خدمة متكاملة لتطوير لعبتك من مجرد فكرة إلى منتج نهائي جاهز للنشر على منصة Google Play، مع التركيز على الجودة وتجربة اللاعب.</p>
+                </div>
+                <a href="https://khamsat.com/programming/game-development-services/3487976" class="button" target="_blank">اطلب الخدمة على خمسات</a>
+            </div>
+        </div>
+        <div class="khamsat-profile-link">
+            <h3>هل تبحث عن خدمات أخرى؟</h3>
+            <p style="margin-bottom: 20px;">يمكنك الاطلاع على صفحتي الشخصية على خمسات لمشاهدة جميع خدماتي وتقييمات العملاء السابقين.</p>
+            <a href="https://khamsat.com/user/alaadev" class="button" target="_blank"><i class="fa-solid fa-briefcase"></i> صفحتي على خمسات</a>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="section-title">
+            <h2>تواصل معي</h2>
+        </div>
+        <p>هل لديك فكرة مشروع أو ترغب في التعاون؟ لا تتردد في التواصل معي!</p>
+        <div class="social-links">
+            <a href="https://discord.com/invite/Egj86rap" aria-label="Discord" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@alaa-dev/" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://khamsat.com/user/alaadev" aria-label="Khamsat" target="_blank">
+                <i class="fa-solid fa-briefcase"></i>
+            </a>
+            <a href="mailto:alaacoder128@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 موقع علاء | جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.classList.add('loaded');
+            }, 500);
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 1250);
+        });
+
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('nav-active');
+            burger.classList.toggle('toggle');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (nav.classList.contains('nav-active')) {
+                    nav.classList.remove('nav-active');
+                    burger.classList.remove('toggle');
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('section');
+        const navA = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = 'home';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 85) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navA.forEach(a => {
+                a.classList.remove('active');
+                const href = a.getAttribute('href').substring(1);
+                if (href === current) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
